@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'motion/react';
 import { ProductCard } from '../components/ProductCard';
 import { Search, SlidersHorizontal } from 'lucide-react';
+import { FadeUp } from '../components/FadeUp';
 
 export function Shop() {
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -87,24 +88,22 @@ export function Shop() {
     <div className="min-h-screen bg-[#f7f3ec] pt-32 pb-20 px-8 md:px-16 lg:px-24" style={{ fontFamily: 'DM Sans, sans-serif' }}>
       <div className="max-w-[1400px] mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-12 text-center"
-        >
-          <h1 
-            className="text-5xl md:text-6xl mb-6 text-[#2d3436]"
-            style={{ fontFamily: 'Playfair Display, serif' }}
-          >
-            Shop Our Collection
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Discover beautiful plants that will transform your space into a green sanctuary.
-          </p>
-        </motion.div>
+        <FadeUp delay={0.1}>
+          <div className="mb-12 text-center">
+            <h1 
+              className="text-5xl md:text-6xl mb-6 text-[#2d3436]"
+              style={{ fontFamily: 'Playfair Display, serif' }}
+            >
+              Shop Our Collection
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Discover beautiful plants that will transform your space into a green sanctuary.
+            </p>
+          </div>
+        </FadeUp>
 
         {/* Search and Filters */}
-        <div className="mb-12">
+        <FadeUp delay={0.2} className="mb-12">
           {/* Search Bar */}
           <div className="mb-8">
             <div className="relative max-w-xl mx-auto">
@@ -113,6 +112,9 @@ export function Shop() {
                 type="text"
                 placeholder="Search for plants..."
                 className="w-full pl-12 pr-4 py-4 bg-white rounded-full border border-gray-200 focus:outline-none focus:border-[#7a9e7e] transition-colors"
+                onChange={(e) => {
+                  /* Optional: update search context */
+                }}
               />
             </div>
           </div>
@@ -166,14 +168,14 @@ export function Shop() {
               </div>
             </div>
           </div>
-        </div>
+        </FadeUp>
 
         {/* Results Count */}
-        <div className="mb-8">
+        <FadeUp delay={0.3} className="mb-8">
           <p className="text-gray-600">
             Showing <span className="text-[#7a9e7e]">{filteredProducts.length}</span> {filteredProducts.length === 1 ? 'plant' : 'plants'}
           </p>
-        </div>
+        </FadeUp>
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">

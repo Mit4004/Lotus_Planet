@@ -3,6 +3,8 @@ import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { ArrowRight, Leaf, Package, HeartHandshake, Star } from 'lucide-react';
 import { ProductCard } from '../components/ProductCard';
 import { Link } from 'react-router';
+import { SplitText } from '../components/SplitText';
+import { FadeUp } from '../components/FadeUp';
 
 export function Home() {
   const featuredProducts = [
@@ -81,15 +83,12 @@ export function Home() {
               </span>
             </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
+            <div
               className="text-6xl md:text-7xl lg:text-8xl mb-6 text-[#2d3436]"
               style={{ fontFamily: 'Playfair Display, serif', lineHeight: '1.1' }}
             >
-              LotusPlant
-            </motion.h1>
+              <SplitText text="LotusPlanet" delay={4} />
+            </div>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -207,15 +206,9 @@ export function Home() {
 
       {/* Features Section */}
       <section className="py-20 px-8 md:px-16 lg:px-24 bg-white">
-        <div className="max-w-[1400px] mx-auto">
+        <FadeUp className="max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center"
-            >
+            <div className="text-center">
               <div className="w-16 h-16 bg-[#7a9e7e]/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Leaf className="text-[#7a9e7e]" size={32} />
               </div>
@@ -225,15 +218,9 @@ export function Home() {
               <p className="text-gray-600 leading-relaxed">
                 Hand-selected plants from trusted growers, ensuring health and beauty.
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-center"
-            >
+            <div className="text-center">
               <div className="w-16 h-16 bg-[#d4a5a5]/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Package className="text-[#d4a5a5]" size={32} />
               </div>
@@ -243,15 +230,9 @@ export function Home() {
               <p className="text-gray-600 leading-relaxed">
                 Expert packaging ensures your plants arrive in perfect condition.
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-center"
-            >
+            <div className="text-center">
               <div className="w-16 h-16 bg-[#7a9e7e]/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <HeartHandshake className="text-[#7a9e7e]" size={32} />
               </div>
@@ -261,44 +242,35 @@ export function Home() {
               <p className="text-gray-600 leading-relaxed">
                 Our plant experts are always here to help you succeed.
               </p>
-            </motion.div>
+            </div>
           </div>
-        </div>
+        </FadeUp>
       </section>
 
       {/* Featured Products Section */}
       <section className="py-20 px-8 md:px-16 lg:px-24">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 
-              className="text-5xl md:text-6xl mb-6 text-[#2d3436]"
-              style={{ fontFamily: 'Playfair Display, serif' }}
-            >
-              Featured Plants
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Discover our handpicked selection of beautiful, easy-to-care-for plants perfect for any space.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            {featuredProducts.map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+          <FadeUp delay={0.1}>
+            <div className="text-center mb-16">
+              <h2 
+                className="text-5xl md:text-6xl mb-6 text-[#2d3436]"
+                style={{ fontFamily: 'Playfair Display, serif' }}
               >
-                <ProductCard {...product} />
-              </motion.div>
-            ))}
-          </div>
+                Featured Plants
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Discover our handpicked selection of beautiful, easy-to-care-for plants perfect for any space.
+              </p>
+            </div>
+          </FadeUp>
+
+          <FadeUp delay={0.2}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+              {featuredProducts.map((product, index) => (
+                <ProductCard key={product.id} {...product} />
+              ))}
+            </div>
+          </FadeUp>
 
           <div className="text-center">
             <Link to="/shop">
@@ -313,14 +285,9 @@ export function Home() {
 
       {/* About Section */}
       <section className="py-20 px-8 md:px-16 lg:px-24 bg-white">
-        <div className="max-w-[1400px] mx-auto">
+        <FadeUp className="max-w-[1400px] mx-auto" delay={0.1}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
+            <div>
               <h2 
                 className="text-4xl md:text-5xl mb-6 text-[#2d3436]"
                 style={{ fontFamily: 'Playfair Display, serif' }}
@@ -328,7 +295,7 @@ export function Home() {
                 Growing Together Since 2020
               </h2>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                At LotusPlant, we believe that every home deserves to be filled with the beauty and serenity of nature. Our passion for plants drives us to source only the finest specimens and provide you with the knowledge to help them thrive.
+                At LotusPlanet, we believe that every home deserves to be filled with the beauty and serenity of nature. Our passion for plants drives us to source only the finest specimens and provide you with the knowledge to help them thrive.
               </p>
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
                 Whether you're a seasoned plant parent or just beginning your green journey, we're here to support you every step of the way.
@@ -338,34 +305,23 @@ export function Home() {
                   Learn Plant Care
                 </button>
               </Link>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="relative h-[500px] rounded-3xl overflow-hidden"
-            >
+            <div className="relative h-[300px] md:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
               <ImageWithFallback
                 src="https://images.unsplash.com/photo-1619077130450-baea09efa355?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwbGFudCUyMG51cnNlcnklMjBncmVlbmhvdXNlfGVufDF8fHx8MTc3MzY0MDgwM3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                 alt="Plant nursery"
                 className="w-full h-full object-cover"
               />
-            </motion.div>
+            </div>
           </div>
-        </div>
+        </FadeUp>
       </section>
 
       {/* Testimonials Section */}
       <section className="py-20 px-8 md:px-16 lg:px-24">
-        <div className="max-w-[1400px] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
+        <FadeUp className="max-w-[1400px] mx-auto" delay={0.1}>
+          <div className="text-center mb-16">
             <h2 
               className="text-5xl md:text-6xl mb-6 text-[#2d3436]"
               style={{ fontFamily: 'Playfair Display, serif' }}
@@ -375,21 +331,17 @@ export function Home() {
             <p className="text-xl text-gray-600">
               Join thousands of happy plant parents
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white p-8 rounded-2xl shadow-md"
+                className="bg-white p-8 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300"
               >
                 <div className="flex gap-1 mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} size={20} className="fill-[#d4a5a5] text-[#d4a5a5]" />
+                     <Star key={i} size={20} className="fill-[#d4a5a5] text-[#d4a5a5]" />
                   ))}
                 </div>
                 <p className="text-gray-600 mb-6 leading-relaxed">
@@ -398,10 +350,10 @@ export function Home() {
                 <p className="text-[#2d3436]" style={{ fontFamily: 'Playfair Display, serif' }}>
                   {testimonial.name}
                 </p>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </div>
+        </FadeUp>
       </section>
     </div>
   );

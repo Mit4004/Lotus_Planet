@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { Heart, ShoppingCart } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import { TiltCard } from './TiltCard';
 
 interface ProductCardProps {
   id: string;
@@ -19,11 +20,8 @@ export function ProductCard({ name, price, image, category, difficulty }: Produc
   };
 
   return (
-    <motion.div
-      whileHover={{ y: -8 }}
-      transition={{ duration: 0.3 }}
-      className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-shadow duration-300"
-    >
+    <TiltCard>
+      <div className="group h-full bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
       {/* Image Container */}
       <div className="relative h-72 overflow-hidden bg-[#f7f3ec]">
         <ImageWithFallback
@@ -68,6 +66,7 @@ export function ProductCard({ name, price, image, category, difficulty }: Produc
           </button>
         </div>
       </div>
-    </motion.div>
+      </div>
+    </TiltCard>
   );
 }

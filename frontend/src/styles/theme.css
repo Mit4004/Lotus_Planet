@@ -2,20 +2,20 @@
 
 :root {
   --font-size: 16px;
-  --background: #ffffff;
-  --foreground: oklch(0.145 0 0);
+  --background: #f7f3ec; /* Cream */
+  --foreground: #2d3436; /* Dark gray for better contrast */
   --card: #ffffff;
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: #030213;
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.95 0.0058 264.53);
-  --secondary-foreground: #030213;
+  --card-foreground: #2d3436;
+  --popover: #ffffff;
+  --popover-foreground: #2d3436;
+  --primary: #7a9e7e; /* Sage Green */
+  --primary-foreground: #ffffff;
+  --secondary: #d4a5a5; /* Dusty Rose */
+  --secondary-foreground: #ffffff;
   --muted: #ececf0;
   --muted-foreground: #717182;
   --accent: #e9ebef;
-  --accent-foreground: #030213;
+  --accent-foreground: #2d3436;
   --destructive: #d4183d;
   --destructive-foreground: #ffffff;
   --border: rgba(0, 0, 0, 0.1);
@@ -42,20 +42,20 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: #1a1a1a;
+  --foreground: #f7f3ec;
+  --card: #242424;
+  --card-foreground: #f7f3ec;
+  --popover: #242424;
+  --popover-foreground: #f7f3ec;
+  --primary: #7a9e7e;
+  --primary-foreground: #ffffff;
+  --secondary: #d4a5a5;
+  --secondary-foreground: #ffffff;
+  --muted: #333333;
+  --muted-foreground: #a1a1aa;
+  --accent: #333333;
+  --accent-foreground: #f7f3ec;
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
   --border: oklch(0.269 0 0);
@@ -135,6 +135,14 @@
 
   html {
     font-size: var(--font-size);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
   }
 
   h1 {

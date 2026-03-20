@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { Droplets, Sun, Wind, Thermometer, Scissors, Bug } from 'lucide-react';
+import { FadeUp } from '../components/FadeUp';
 
 export function CareTips() {
   const careTips = [
@@ -146,13 +147,8 @@ export function CareTips() {
 
       {/* Care Tips Grid */}
       <section className="py-20 px-8 md:px-16 lg:px-24 bg-white">
-        <div className="max-w-[1400px] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
+        <FadeUp delay={0.1} className="max-w-[1400px] mx-auto">
+          <div className="text-center mb-16">
             <h2 
               className="text-4xl md:text-5xl mb-6 text-[#2d3436]"
               style={{ fontFamily: 'Playfair Display, serif' }}
@@ -162,7 +158,7 @@ export function CareTips() {
             <p className="text-xl text-gray-600">
               Master these fundamentals for thriving houseplants
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {careTips.map((tip, index) => {
@@ -200,18 +196,13 @@ export function CareTips() {
               );
             })}
           </div>
-        </div>
+        </FadeUp>
       </section>
 
       {/* Common Problems */}
       <section className="py-20 px-8 md:px-16 lg:px-24">
-        <div className="max-w-[1400px] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
+        <FadeUp delay={0.2} className="max-w-[1400px] mx-auto">
+          <div className="text-center mb-16">
             <h2 
               className="text-4xl md:text-5xl mb-6 text-[#2d3436]"
               style={{ fontFamily: 'Playfair Display, serif' }}
@@ -221,7 +212,7 @@ export function CareTips() {
             <p className="text-xl text-gray-600">
               Solutions to common plant problems
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {commonProblems.map((item, index) => (
@@ -250,18 +241,13 @@ export function CareTips() {
               </motion.div>
             ))}
           </div>
-        </div>
+        </FadeUp>
       </section>
 
       {/* Seasonal Care Calendar */}
       <section className="py-20 px-8 md:px-16 lg:px-24 bg-white">
-        <div className="max-w-[1400px] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
+        <FadeUp delay={0.1} className="max-w-[1400px] mx-auto">
+          <div className="text-center mb-16">
             <h2 
               className="text-4xl md:text-5xl mb-6 text-[#2d3436]"
               style={{ fontFamily: 'Playfair Display, serif' }}
@@ -271,7 +257,7 @@ export function CareTips() {
             <p className="text-xl text-gray-600">
               Adjust your care routine with the seasons
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -326,7 +312,7 @@ export function CareTips() {
               </motion.div>
             ))}
           </div>
-        </div>
+        </FadeUp>
       </section>
 
       {/* Tips from Experts */}
