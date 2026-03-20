@@ -28,7 +28,7 @@ export function Admin() {
   const stats = [
     {
       label: 'Total Revenue',
-      value: '$12,458',
+      value: '₹12,458',
       change: '+12.5%',
       icon: DollarSign,
       color: '#7a9e7e'
@@ -200,7 +200,7 @@ export function Admin() {
                         <p className="text-sm text-gray-500">{order.customer}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-[#2d3436]">${order.total}</p>
+                        <p className="text-[#2d3436]">₹{order.total}</p>
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           order.status === 'Delivered' ? 'bg-green-100 text-green-700' :
                           order.status === 'Shipped' ? 'bg-blue-100 text-blue-700' :
@@ -269,7 +269,7 @@ export function Admin() {
                     <tr key={product.id} className="border-b border-gray-100 hover:bg-[#f7f3ec] transition-colors">
                       <td className="py-4 px-4 text-[#2d3436]">{product.name}</td>
                       <td className="py-4 px-4 text-gray-600">{product.category}</td>
-                      <td className="py-4 px-4 text-[#2d3436]">${product.price}</td>
+                      <td className="py-4 px-4 text-[#2d3436]">₹{product.price}</td>
                       <td className="py-4 px-4 text-gray-600">{product.stock}</td>
                       <td className="py-4 px-4">
                         <span className={`px-3 py-1 rounded-full text-sm ${
@@ -329,7 +329,7 @@ export function Admin() {
                       <td className="py-4 px-4 text-[#2d3436]">{order.id}</td>
                       <td className="py-4 px-4 text-gray-600">{order.customer}</td>
                       <td className="py-4 px-4 text-gray-600">{order.items}</td>
-                      <td className="py-4 px-4 text-[#2d3436]">${order.total}</td>
+                      <td className="py-4 px-4 text-[#2d3436]">₹{order.total}</td>
                       <td className="py-4 px-4 text-gray-600">{order.date}</td>
                       <td className="py-4 px-4">
                         <span className={`px-3 py-1 rounded-full text-sm ${

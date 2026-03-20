@@ -42,6 +42,41 @@ export function Home() {
     }
   ];
 
+  const newArrivals = [
+    {
+      id: 'n1',
+      name: 'Rose Bush',
+      price: 399,
+      image: 'https://images.unsplash.com/photo-1559564484-e48b3e040ff4?auto=format&fit=crop&q=80&w=1080',
+      category: 'Flowering Plants',
+      difficulty: 'Medium' as const
+    },
+    {
+      id: 'n2',
+      name: 'Lavender',
+      price: 249,
+      image: 'https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?auto=format&fit=crop&q=80&w=1080',
+      category: 'Herbs & Kitchen',
+      difficulty: 'Easy' as const
+    },
+    {
+      id: 'n3',
+      name: 'Bamboo Palm',
+      price: 599,
+      image: 'https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&q=80&w=1080',
+      category: 'Indoor Plants',
+      difficulty: 'Easy' as const
+    },
+    {
+      id: 'n4',
+      name: 'Jade Plant',
+      price: 199,
+      image: 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&q=80&w=1080',
+      category: 'Succulents & Cacti',
+      difficulty: 'Easy' as const
+    }
+  ];
+
   const testimonials = [
     {
       name: 'Sarah Johnson',
@@ -204,6 +239,127 @@ export function Home() {
         </div>
       </section>
 
+      {/* Marquee Ticker */}
+      <div className="w-full bg-[#7a9e7e] h-[48px] overflow-hidden flex items-center border-y border-[#6a8e6e]/20">
+        <style>{`
+          @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+          }
+          .animate-marquee {
+            animation: marquee 25s linear infinite;
+            display: flex;
+            white-space: nowrap;
+            width: max-content;
+          }
+        `}</style>
+        <div className="animate-marquee text-[#f7f3ec] text-[14px] tracking-widest uppercase">
+          {Array(8).fill("Indoor Plants • Outdoor Plants • Succulents • Flowering Plants • Herbs • Rare & Exotic • Free Delivery above ₹500 • ").map((text, i) => (
+            <span key={i} className="mr-2">{text}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* Category Showcase Section */}
+      <section className="py-20 px-8 md:px-16 lg:px-24 bg-[#f7f3ec]">
+        <FadeUp className="max-w-[1400px] mx-auto">
+          <div className="text-center mb-16">
+            <h2 
+              className="text-5xl md:text-6xl mb-6 text-[#2d3436]"
+              style={{ fontFamily: 'Playfair Display, serif' }}
+            >
+              Shop by Category
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-auto lg:h-[600px]">
+            {/* Left side: 2 large cards */}
+            <div className="grid grid-rows-2 gap-6 h-full">
+              {/* Card 1 */}
+              <Link to="/shop" className="group relative rounded-2xl overflow-hidden h-64 lg:h-full block shadow-md hover:shadow-xl transition-shadow duration-300">
+                <ImageWithFallback
+                  src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80&w=1080"
+                  alt="Indoor Plants"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-black/30 transition-colors duration-500 group-hover:bg-black/50" />
+                <div className="absolute bottom-0 left-0 p-8 w-full bg-gradient-to-t from-black/80 via-black/30 to-transparent">
+                  <h3 className="text-3xl text-white font-medium" style={{ fontFamily: 'Playfair Display, serif' }}>Indoor Plants</h3>
+                </div>
+              </Link>
+              
+              {/* Card 2 */}
+              <Link to="/shop" className="group relative rounded-2xl overflow-hidden h-64 lg:h-full block shadow-md hover:shadow-xl transition-shadow duration-300">
+                <ImageWithFallback
+                  src="https://images.unsplash.com/photo-1584589167171-541ce45f1eea?auto=format&fit=crop&q=80&w=1080"
+                  alt="Outdoor Plants"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-black/30 transition-colors duration-500 group-hover:bg-black/50" />
+                <div className="absolute bottom-0 left-0 p-8 w-full bg-gradient-to-t from-black/80 via-black/30 to-transparent">
+                  <h3 className="text-3xl text-white font-medium" style={{ fontFamily: 'Playfair Display, serif' }}>Outdoor Plants</h3>
+                </div>
+              </Link>
+            </div>
+
+            {/* Right side: 4 smaller cards in 2x2 grid */}
+            <div className="grid grid-cols-2 grid-rows-2 gap-6 h-full">
+              {/* Card 3 */}
+              <Link to="/shop" className="group relative rounded-2xl overflow-hidden h-48 lg:h-full block shadow-md hover:shadow-xl transition-shadow duration-300">
+                <ImageWithFallback
+                  src="https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&q=80&w=800"
+                  alt="Succulents & Cacti"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-black/30 transition-colors duration-500 group-hover:bg-black/50" />
+                <div className="absolute bottom-0 left-0 p-6 w-full bg-gradient-to-t from-black/80 via-black/30 to-transparent">
+                  <h3 className="text-xl md:text-2xl text-white font-medium" style={{ fontFamily: 'Playfair Display, serif' }}>Succulents & Cacti</h3>
+                </div>
+              </Link>
+
+              {/* Card 4 */}
+              <Link to="/shop" className="group relative rounded-2xl overflow-hidden h-48 lg:h-full block shadow-md hover:shadow-xl transition-shadow duration-300">
+                <ImageWithFallback
+                  src="https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&q=80&w=800"
+                  alt="Flowering Plants"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-black/30 transition-colors duration-500 group-hover:bg-black/50" />
+                <div className="absolute bottom-0 left-0 p-6 w-full bg-gradient-to-t from-black/80 via-black/30 to-transparent">
+                  <h3 className="text-xl md:text-2xl text-white font-medium" style={{ fontFamily: 'Playfair Display, serif' }}>Flowering Plants</h3>
+                </div>
+              </Link>
+
+              {/* Card 5 */}
+              <Link to="/shop" className="group relative rounded-2xl overflow-hidden h-48 lg:h-full block shadow-md hover:shadow-xl transition-shadow duration-300">
+                <ImageWithFallback
+                  src="https://images.unsplash.com/photo-1595188177579-3738096f9bf1?auto=format&fit=crop&q=80&w=800"
+                  alt="Herbs & Kitchen"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-black/30 transition-colors duration-500 group-hover:bg-black/50" />
+                <div className="absolute bottom-0 left-0 p-6 w-full bg-gradient-to-t from-black/80 via-black/30 to-transparent">
+                  <h3 className="text-xl md:text-2xl text-white font-medium" style={{ fontFamily: 'Playfair Display, serif' }}>Herbs & Kitchen</h3>
+                </div>
+              </Link>
+
+              {/* Card 6 */}
+              <Link to="/shop" className="group relative rounded-2xl overflow-hidden h-48 lg:h-full block shadow-md hover:shadow-xl transition-shadow duration-300">
+                <ImageWithFallback
+                  src="https://images.unsplash.com/photo-1620127251761-c80dce686cb6?auto=format&fit=crop&q=80&w=800"
+                  alt="Rare & Exotic"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-black/30 transition-colors duration-500 group-hover:bg-black/50" />
+                <div className="absolute bottom-0 left-0 p-6 w-full bg-gradient-to-t from-black/80 via-black/30 to-transparent">
+                  <h3 className="text-xl md:text-2xl text-white font-medium" style={{ fontFamily: 'Playfair Display, serif' }}>Rare & Exotic</h3>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </FadeUp>
+      </section>
+
       {/* Features Section */}
       <section className="py-20 px-8 md:px-16 lg:px-24 bg-white">
         <FadeUp className="max-w-[1400px] mx-auto">
@@ -283,8 +439,101 @@ export function Home() {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* New Arrivals Section */}
       <section className="py-20 px-8 md:px-16 lg:px-24 bg-white">
+        <div className="max-w-[1400px] mx-auto">
+          <FadeUp delay={0.1}>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-16 text-center">
+              <h2 
+                className="text-5xl md:text-6xl text-[#2d3436]"
+                style={{ fontFamily: 'Playfair Display, serif' }}
+              >
+                Just Arrived 🌿
+              </h2>
+              <span className="bg-[#d4a5a5] text-white text-sm tracking-wider uppercase font-medium px-4 py-1.5 rounded-full shadow-sm md:mt-3">
+                New
+              </span>
+            </div>
+          </FadeUp>
+
+          <FadeUp delay={0.2}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+              {newArrivals.map((product) => (
+                <ProductCard key={product.id} {...product} />
+              ))}
+            </div>
+          </FadeUp>
+
+          <div className="text-center">
+            <Link to="/shop">
+              <button className="border-2 border-[#7a9e7e] text-[#7a9e7e] hover:bg-[#7a9e7e] hover:text-white px-10 py-4 rounded-full flex items-center gap-2 mx-auto transition-all duration-300">
+                <span>View All New Arrivals</span>
+                <ArrowRight size={20} />
+              </button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Seasonal Collection Banner */}
+      <section className="bg-[#2a4a2e] w-full min-h-[400px] overflow-hidden my-8 lg:my-0">
+        <FadeUp className="h-full w-full">
+          <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-[400px] px-8 md:px-16 lg:px-24 py-16">
+            
+            {/* Left Content */}
+            <div className="z-10 relative text-center lg:text-left">
+              <h2 
+                className="text-4xl md:text-5xl lg:text-7xl text-white mb-6 leading-[1.1]"
+                style={{ fontFamily: 'Playfair Display, serif' }}
+              >
+                This Season's Picks
+              </h2>
+              <p className="text-xl md:text-2xl text-[#7a9e7e] mb-10" style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic' }}>
+                Fresh flowering plants for every corner
+              </p>
+              <Link to="/shop">
+                <button className="bg-[#f7f3ec] hover:bg-white text-[#2a4a2e] font-medium px-10 py-4 rounded-full inline-flex items-center gap-2 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
+                  <span>Shop Now</span>
+                  <ArrowRight size={20} />
+                </button>
+              </Link>
+            </div>
+
+            {/* Right Images (Artistic Arrangement) */}
+            <div className="relative h-[350px] md:h-[500px] w-full hidden md:block mt-8 lg:mt-0">
+              {/* Image 1 - Top Right - Back */}
+              <div className="absolute top-0 right-4 lg:right-12 w-44 h-60 md:w-56 md:h-[320px] rounded-3xl overflow-hidden shadow-2xl rotate-12 z-10 border-4 border-[#7a9e7e]/20 transition-transform duration-700 hover:rotate-6 hover:scale-105">
+                <ImageWithFallback
+                  src="https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&q=80&w=600"
+                  alt="Flowering Plant"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Image 2 - Bottom Left - Back */}
+              <div className="absolute bottom-4 left-4 lg:left-12 w-40 h-56 md:w-48 md:h-[280px] rounded-3xl overflow-hidden shadow-2xl -rotate-12 z-20 border-4 border-[#d4a5a5]/20 transition-transform duration-700 hover:-rotate-6 hover:scale-105">
+                <ImageWithFallback
+                  src="https://images.unsplash.com/photo-1559564484-e48b3e040ff4?auto=format&fit=crop&q=80&w=600"
+                  alt="Rose Bush"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Image 3 - Center - Front */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-52 h-72 md:w-64 md:h-[380px] rounded-3xl overflow-hidden shadow-2xl -rotate-3 z-30 border-4 border-[#f7f3ec] transition-transform duration-700 hover:-translate-y-[52%] hover:rotate-0 hover:scale-105">
+                <ImageWithFallback
+                  src="https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?auto=format&fit=crop&q=80&w=800"
+                  alt="Lavender"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </FadeUp>
+      </section>
+
+      {/* About Section */}
+      <section className="py-20 px-8 md:px-16 lg:px-24 bg-[#f7f3ec]">
         <FadeUp className="max-w-[1400px] mx-auto" delay={0.1}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
@@ -313,6 +562,41 @@ export function Home() {
                 alt="Plant nursery"
                 className="w-full h-full object-cover"
               />
+            </div>
+          </div>
+        </FadeUp>
+      </section>
+
+      {/* Photo Gallery Strip */}
+      <section className="py-20 px-4 md:px-8 bg-white">
+        <FadeUp delay={0.1}>
+          <div className="text-center mb-12">
+            <h2 
+              className="text-4xl md:text-5xl text-[#2d3436]"
+              style={{ fontFamily: 'Playfair Display, serif' }}
+            >
+              Our Garden 🌸
+            </h2>
+          </div>
+          <div className="max-w-[1600px] mx-auto rounded-3xl overflow-hidden shadow-xl">
+            <div className="grid grid-cols-3 lg:grid-cols-6 gap-0">
+              {[
+                "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&q=80&w=500",
+                "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80&w=500",
+                "https://images.unsplash.com/photo-1559564484-e48b3e040ff4?auto=format&fit=crop&q=80&w=500",
+                "https://images.unsplash.com/photo-1595188177579-3738096f9bf1?auto=format&fit=crop&q=80&w=500",
+                "https://images.unsplash.com/photo-1620127251761-c80dce686cb6?auto=format&fit=crop&q=80&w=500",
+                "https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&q=80&w=500"
+              ].map((imgUrl, i) => (
+                <div key={i} className="aspect-square relative group overflow-hidden">
+                  <ImageWithFallback
+                    src={imgUrl}
+                    alt={`Garden plant ${i + 1}`}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
+                </div>
+              ))}
             </div>
           </div>
         </FadeUp>
@@ -353,6 +637,34 @@ export function Home() {
               </div>
             ))}
           </div>
+        </FadeUp>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="bg-[#d4a5a5] py-24 px-8 md:px-16 lg:px-24 text-center">
+        <FadeUp className="max-w-2xl mx-auto">
+          <h2 
+            className="text-4xl md:text-5xl lg:text-6xl text-white mb-6"
+            style={{ fontFamily: 'Playfair Display, serif' }}
+          >
+            Get 10% Off Your First Order
+          </h2>
+          <p className="text-lg md:text-xl text-white/90 mb-10">
+            Subscribe for plant care tips and exclusive offers
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto mb-6">
+            <input 
+              type="email" 
+              placeholder="Enter your email" 
+              className="flex-1 px-6 py-4 rounded-full border-none focus:outline-none focus:ring-4 focus:ring-white/30 text-[#2d3436] placeholder-gray-400 shadow-sm"
+            />
+            <button className="bg-[#f7f3ec] hover:bg-white text-[#2a4a2e] font-medium px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl whitespace-nowrap">
+              Subscribe
+            </button>
+          </div>
+          <p className="text-white/80 text-sm">
+            No spam, only plants 🌿
+          </p>
         </FadeUp>
       </section>
     </div>

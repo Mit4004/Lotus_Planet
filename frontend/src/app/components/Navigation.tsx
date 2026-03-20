@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { ShoppingCart, Menu, X, Heart, User } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 export function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { cartCount, setIsCartOpen } = useCart();
 
   const navLinks = [
     { path: '/', label: 'Home' },
@@ -63,11 +65,21 @@ export function Navigation() {
             <button className="p-2 hover:text-[#d4a5a5] transition-colors duration-300 hidden md:block">
               <User size={22} />
             </button>
-            <button className="p-2 hover:text-[#7a9e7e] transition-colors duration-300 relative">
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="p-2 hover:text-[#7a9e7e] transition-colors duration-300 relative"
+            >
               <ShoppingCart size={22} />
-              <span className="absolute -top-1 -right-1 bg-[#d4a5a5] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                0
-              </span>
+              {cartCount > 0 && (
+                <motion.span 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  key={cartCount}
+                  className="absolute -top-1 -right-1 bg-[#d4a5a5] text-white text-[10px] rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center font-bold shadow-sm"
+                >
+                  {cartCount}
+                </motion.span>
+              )}
             </button>
 
             {/* Mobile Menu Toggle */}

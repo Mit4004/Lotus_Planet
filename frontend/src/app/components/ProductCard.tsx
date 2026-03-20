@@ -2,6 +2,8 @@ import { motion } from 'motion/react';
 import { Heart, ShoppingCart } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { TiltCard } from './TiltCard';
+import { useState } from 'react';
+import { useCart } from '../context/CartContext';
 
 interface ProductCardProps {
   id: string;
@@ -12,7 +14,16 @@ interface ProductCardProps {
   difficulty: 'Easy' | 'Medium' | 'Advanced';
 }
 
-export function ProductCard({ name, price, image, category, difficulty }: ProductCardProps) {
+export function ProductCard({ id, name, price, image, category, difficulty }: ProductCardProps) {
+  const { addToCart } = useCart();
+  const [selectedSize, setSelectedSize] = useState<'S' | 'M' | 'L'>('M');
+  const [isAdding, setIsAdding] = useState(false);
+
+  const handleAddToCart = () => {
+    setIsAdding(true);
+    addToCart({ id, name, price, image, quantity: 1, size: selectedSize });
+    setTimeout(() => setIsAdding(false), 600);
+  };
   const difficultyColors = {
     Easy: 'bg-[#7a9e7e]',
     Medium: 'bg-[#d4a5a5]',
@@ -57,12 +68,37 @@ export function ProductCard({ name, price, image, category, difficulty }: Produc
         >
           {name}
         </h3>
+        
+        <div className="flex items-center gap-2 mb-4 mt-2">
+          {['S', 'M', 'L'].map((size) => (
+            <button
+              key={size}
+              onClick={() => setSelectedSize(size as 'S' | 'M' | 'L')}
+              className={`w-8 h-8 rounded-full text-xs font-medium transition-colors border ${
+                selectedSize === size 
+                  ? 'bg-[#7a9e7e] text-white border-[#7a9e7e]' 
+                  : 'bg-white text-gray-500 border-gray-200 hover:border-[#7a9e7e] hover:text-[#7a9e7e]'
+              }`}
+            >
+              {size}
+            </button>
+          ))}
+        </div>
+
         <div className="flex items-center justify-between">
           <span className="text-2xl text-[#2d3436]" style={{ fontFamily: 'Playfair Display, serif' }}>
-            ${price}
+            ₹{price}
           </span>
-          <button className="bg-[#f7f3ec] hover:bg-[#7a9e7e] hover:text-white px-4 py-2 rounded-full text-sm transition-all duration-300">
-            Add to Cart
+          <button 
+            onClick={handleAddToCart}
+            disabled={isAdding}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              isAdding 
+                ? 'bg-[#d4a5a5] text-white scale-95' 
+                : 'bg-[#f7f3ec] hover:bg-[#7a9e7e] hover:text-white'
+            }`}
+          >
+            {isAdding ? 'Added!' : 'Add to Cart'}
           </button>
         </div>
       </div>
