@@ -5,8 +5,25 @@ import { ProductCard } from '../components/ProductCard';
 import { Link } from 'react-router';
 import { SplitText } from '../components/SplitText';
 import { FadeUp } from '../components/FadeUp';
+import { useState, useEffect } from 'react';
 
 export function Home() {
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [slidingText, setSlidingText] = useState('Indoor Plants • Outdoor Plants • Succulents • Flowering Plants • Herbs • Rare & Exotic • Free Delivery above ₹500 • ');
+
+  useEffect(() => {
+    const settings = localStorage.getItem('lotusplanet_settings');
+    if (settings) {
+      try {
+        const parsed = JSON.parse(settings);
+        if (parsed.marqueeText) setSlidingText(parsed.marqueeText);
+      } catch (e) {
+        console.error("Failed to parse settings", e);
+      }
+    }
+  }, []);
+
   const featuredProducts = [
     {
       id: '1',
@@ -254,7 +271,7 @@ export function Home() {
           }
         `}</style>
         <div className="animate-marquee text-[#f7f3ec] text-[14px] tracking-widest uppercase">
-          {Array(8).fill("Indoor Plants • Outdoor Plants • Succulents • Flowering Plants • Herbs • Rare & Exotic • Free Delivery above ₹500 • ").map((text, i) => (
+          {Array(8).fill(slidingText).map((text, i) => (
             <span key={i} className="mr-2">{text}</span>
           ))}
         </div>
@@ -637,34 +654,6 @@ export function Home() {
               </div>
             ))}
           </div>
-        </FadeUp>
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="bg-[#d4a5a5] py-24 px-8 md:px-16 lg:px-24 text-center">
-        <FadeUp className="max-w-2xl mx-auto">
-          <h2 
-            className="text-4xl md:text-5xl lg:text-6xl text-white mb-6"
-            style={{ fontFamily: 'Playfair Display, serif' }}
-          >
-            Get 10% Off Your First Order
-          </h2>
-          <p className="text-lg md:text-xl text-white/90 mb-10">
-            Subscribe for plant care tips and exclusive offers
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto mb-6">
-            <input 
-              type="email" 
-              placeholder="Enter your email" 
-              className="flex-1 px-6 py-4 rounded-full border-none focus:outline-none focus:ring-4 focus:ring-white/30 text-[#2d3436] placeholder-gray-400 shadow-sm"
-            />
-            <button className="bg-[#f7f3ec] hover:bg-white text-[#2a4a2e] font-medium px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl whitespace-nowrap">
-              Subscribe
-            </button>
-          </div>
-          <p className="text-white/80 text-sm">
-            No spam, only plants 🌿
-          </p>
         </FadeUp>
       </section>
     </div>

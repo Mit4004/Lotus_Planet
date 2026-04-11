@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { apiRequest } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
-import { CheckCircle, XCircle, ExternalLink, Clock, Package } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CheckCircle, XCircle, ExternalLink, Clock, Package, ChevronDown, ChevronUp } from 'lucide-react';
 
 export function AdminOrders() {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [processing, setProcessing] = useState<string | null>(null);
+  const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -89,10 +91,17 @@ export function AdminOrders() {
               </thead>
               <tbody className="divide-y divide-gray-50 text-sm">
                 {orders.map(order => (
-                  <tr key={order._id} className="hover:bg-gray-50/50 transition-colors">
+                  <React.Fragment key={order._id}>
+                  <tr className="hover:bg-gray-50/50 transition-colors">
                     <td className="p-4">
                       <span className="font-mono text-xs text-gray-500">{order._id.substring(order._id.length - 8)}</span>
                       <div className="text-xs text-gray-400 mt-1">{new Date(order.createdAt).toLocaleDateString()}</div>
+                      <button 
+                        onClick={() => setExpandedOrder(expandedOrder === order._id ? null : order._id)} 
+                        className="flex items-center gap-1 text-[#7a9e7e] hover:text-[#2a4a2e] text-xs font-medium mt-2 transition-colors"
+                      >
+                        {expandedOrder === order._id ? <><ChevronUp size={14}/> Hide Details</> : <><ChevronDown size={14}/> View Full Details</>}
+                      </button>
                     </td>
                     <td className="p-4">
                       <div className="font-medium text-gray-800">{order.customer?.name}</div>
@@ -160,6 +169,60 @@ export function AdminOrders() {
                       )}
                     </td>
                   </tr>
+                  <tr className="p-0">
+                    <td colSpan={6} className="p-0 border-0">
+                      <AnimatePresence>
+                        {expandedOrder === order._id && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3, ease: 'easeInOut' }}
+                            className="overflow-hidden bg-gray-50/30"
+                          >
+                            <div className="p-6 border-b border-gray-100">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-gray-700 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                                <div>
+                                  <h4 className="font-medium text-[#2d3436] mb-3 border-b border-gray-100 pb-2">🚚 Delivery Instructions</h4>
+                                  <div className="bg-[#f7f3ec]/50 p-4 rounded-xl text-xs leading-relaxed space-y-1">
+                                    <p className="font-semibold text-gray-800 text-sm mb-1">{order.address?.fullName || order.customer?.name}</p>
+                                    <p><span className="text-gray-400">Address:</span> {order.address?.house}, {order.address?.street}</p>
+                                    {order.address?.landmark && <p><span className="text-gray-400">Landmark:</span> {order.address.landmark}</p>}
+                                    <p><span className="text-gray-400">Area:</span> {order.address?.city}, {order.address?.state}</p>
+                                    <p><span className="text-gray-400">Pincode:</span> <span className="font-medium">{order.address?.pincode}</span></p>
+                                    <p className="pt-2 mt-2 border-t border-gray-200/50"><span className="text-gray-400">Contact:</span> {order.address?.phone || order.customer?.phone}</p>
+                                  </div>
+                                </div>
+                                <div>
+                                  <h4 className="font-medium text-[#2d3436] mb-3 border-b border-gray-100 pb-2">📦 Items Ordered ({order.items?.length})</h4>
+                                  <ul className="space-y-2 max-h-48 overflow-y-auto pr-2">
+                                    {order.items?.map((item: any, i: number) => (
+                                      <li key={i} className="flex gap-3 items-center bg-[#f7f3ec]/30 p-2.5 border border-[#7a9e7e]/10 rounded-xl">
+                                        {item.image && <img src={item.image} alt={item.name} className="w-10 h-10 object-cover rounded-lg bg-white" />}
+                                        <div className="flex-1 min-w-0">
+                                          <p className="truncate text-[13px] font-medium text-gray-800">{item.name}</p>
+                                          <p className="text-[11px] text-gray-500">Size: {item.size} • ₹{item.price}</p>
+                                        </div>
+                                        <span className="flex-shrink-0 text-xs font-bold bg-[#7a9e7e]/20 text-[#2a4a2e] px-2.5 py-1 rounded-md">
+                                          x{item.quantity}
+                                        </span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                  <div className="mt-4 flex justify-between items-center text-xs text-gray-500 font-medium bg-[#f7f3ec]/50 p-3 rounded-xl">
+                                      <span>Shipping: ₹{order.shippingCharge}</span>
+                                      <span>Subtotal: ₹{order.subtotal}</span>
+                                      <span className="text-[#2a4a2e] font-bold text-sm">Total: ₹{order.total}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </td>
+                  </tr>
+                  </React.Fragment>
                 ))}
               </tbody>
             </table>

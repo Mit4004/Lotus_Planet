@@ -1,12 +1,32 @@
 import { Navigate, Outlet, Link, useLocation, useNavigate } from 'react-router';
 import { LayoutDashboard, Package, FolderTree, ShoppingCart, Settings, LogOut, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import { apiRequest } from '../../utils/api';
 
 export function AdminLayout() {
   const isAdmin = localStorage.getItem('isAdmin') === 'true';
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user } = useAuth();
+  const [pendingOrdersCount, setPendingOrdersCount] = useState(0);
+
+  useEffect(() => {
+    if (user?.token) {
+      const fetchOrders = async () => {
+        try {
+          const res = await apiRequest('/orders', { token: user.token });
+          const pending = res.data.filter((o: any) => o.paymentStatus === 'Pending Verification').length;
+          setPendingOrdersCount(pending);
+        } catch { } // fail silently on background poll
+      };
+      
+      fetchOrders();
+      const interval = setInterval(fetchOrders, 60000); // Poll every minute
+      return () => clearInterval(interval);
+    }
+  }, [user?.token]);
 
   if (!isAdmin) {
     return <Navigate to="/login" replace />;
@@ -47,17 +67,33 @@ export function AdminLayout() {
                 isActive ? 'bg-white/20 font-medium' : 'hover:bg-white/10'
               }`}
             >
-              <Icon size={20} />
-              <span>{link.label}</span>
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-3">
+                  <Icon size={20} />
+                  <span>{link.label}</span>
+                </div>
+                {link.label === 'Orders' && pendingOrdersCount > 0 && (
+                  <span className="bg-red-500 text-white text-[10px] leading-tight font-bold px-2 py-0.5 rounded-full">
+                    {pendingOrdersCount}
+                  </span>
+                )}
+              </div>
             </Link>
           );
         })}
       </nav>
 
-      <div className="p-4 border-t border-white/20">
+      <div className="p-4 border-t border-white/20 space-y-2">
+        <Link
+          to="/"
+          className="flex items-center gap-3 px-4 py-3 w-full text-left rounded-xl hover:bg-white/10 transition-colors text-[#f7f3ec]"
+        >
+          <ShoppingCart size={20} />
+          <span>View Storefront</span>
+        </Link>
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 px-4 py-3 w-full text-left rounded-xl hover:bg-white/10 transition-colors text-[#f7f3ec]"
+          className="flex items-center gap-3 px-4 py-3 w-full text-left rounded-xl hover:bg-[#d4a5a5]/20 text-[#f7f3ec] hover:text-white transition-colors"
         >
           <LogOut size={20} />
           <span>Logout</span>

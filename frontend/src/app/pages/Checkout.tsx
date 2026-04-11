@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { apiRequest } from '../utils/api';
-import { MapPin, Phone, User as UserIcon } from 'lucide-react';
+import { MapPin, Phone, User as UserIcon, CheckCircle, Loader2 } from 'lucide-react';
 
 export function Checkout() {
   const { items, cartTotal, clearCart } = useCart();
@@ -23,8 +23,30 @@ export function Checkout() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [pincodeStatus, setPincodeStatus] = useState<'idle' | 'loading' | 'found' | 'error'>('idle');
 
   const shipping = 50;
+
+  const lookupPincode = async (pincode: string) => {
+    if (pincode.length !== 6 || !/^\d{6}$/.test(pincode)) {
+      setPincodeStatus('idle');
+      return;
+    }
+    setPincodeStatus('loading');
+    try {
+      const res = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
+      const data = await res.json();
+      if (data?.[0]?.Status === 'Success' && data[0].PostOffice?.length > 0) {
+        const po = data[0].PostOffice[0];
+        setForm(prev => ({ ...prev, city: po.District, state: po.State }));
+        setPincodeStatus('found');
+      } else {
+        setPincodeStatus('error');
+      }
+    } catch {
+      setPincodeStatus('error');
+    }
+  };
 
   if (items.length === 0) {
     return (
@@ -142,16 +164,33 @@ export function Checkout() {
                   <input type="text" name="landmark" value={form.landmark} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7a9e7e]/50" />
                 </div>
                 <div>
+                  <label className="block text-sm text-gray-600 mb-1">Pincode</label>
+                  <div className="relative">
+                    <input
+                      required
+                      type="text"
+                      name="pincode"
+                      maxLength={6}
+                      value={form.pincode}
+                      onChange={e => {
+                        handleChange(e);
+                        lookupPincode(e.target.value);
+                      }}
+                      className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7a9e7e]/50 pr-10"
+                      placeholder="e.g. 110001"
+                    />
+                    {pincodeStatus === 'loading' && <Loader2 size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7a9e7e] animate-spin" />}
+                    {pincodeStatus === 'found' && <CheckCircle size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500" />}
+                  </div>
+                  {pincodeStatus === 'error' && <p className="text-red-500 text-xs mt-1">Invalid pincode — please check and try again</p>}
+                </div>
+                <div>
                   <label className="block text-sm text-gray-600 mb-1">City</label>
-                  <input required type="text" name="city" value={form.city} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7a9e7e]/50" />
+                  <input required type="text" name="city" value={form.city} onChange={handleChange} className={`w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:ring-[#7a9e7e]/50 ${pincodeStatus === 'found' ? 'border-green-300 bg-green-50/30' : 'border-gray-200'}`} />
                 </div>
                 <div>
                   <label className="block text-sm text-gray-600 mb-1">State</label>
-                  <input required type="text" name="state" value={form.state} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7a9e7e]/50" />
-                </div>
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Pincode</label>
-                  <input required type="text" name="pincode" value={form.pincode} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7a9e7e]/50" />
+                  <input required type="text" name="state" value={form.state} onChange={handleChange} className={`w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:ring-[#7a9e7e]/50 ${pincodeStatus === 'found' ? 'border-green-300 bg-green-50/30' : 'border-gray-200'}`} />
                 </div>
               </div>
             </div>
