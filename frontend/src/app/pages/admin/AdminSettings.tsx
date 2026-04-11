@@ -77,18 +77,13 @@ export function AdminSettings() {
     }
   });
 
-  const handleVisualChange = (key: string, val: string) => {
-    setFormData(prev => ({ ...prev, visuals: { ...prev.visuals, [key]: val } }));
-  };
-
   const [showToast, setShowToast] = useState(false);
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     apiRequest('/settings')
       .then(res => {
-        setFormData(res);
+        setFormData(p => ({ ...p, ...res, visuals: res.visuals || p.visuals }));
         setLoading(false);
       })
       .catch(err => {
@@ -96,6 +91,10 @@ export function AdminSettings() {
         setLoading(false);
       });
   }, []);
+
+  const handleVisualChange = (key: string, val: string) => {
+    setFormData(prev => ({ ...prev, visuals: { ...prev.visuals, [key]: val } }));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -251,49 +250,49 @@ export function AdminSettings() {
              <div>
                 <h3 className="text-[#2d3436] font-medium mb-4">Hero Section (Top Collage)</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                   <ImageUploadField label="Top Right Image" value={formData.visuals.hero1} onChange={v => handleVisualChange('hero1', v)} placeholder="Tall aesthetic image..." />
-                   <ImageUploadField label="Bottom Left Image" value={formData.visuals.hero2} onChange={v => handleVisualChange('hero2', v)} placeholder="Wide balanced image..." />
-                   <ImageUploadField label="Center Foreground" value={formData.visuals.hero3} onChange={v => handleVisualChange('hero3', v)} placeholder="Small accent pop image..." />
+                   <ImageUploadField label="Top Right Image" value={formData.visuals?.hero1 || ''} onChange={v => handleVisualChange('hero1', v)} placeholder="Tall aesthetic image..." />
+                   <ImageUploadField label="Bottom Left Image" value={formData.visuals?.hero2 || ''} onChange={v => handleVisualChange('hero2', v)} placeholder="Wide balanced image..." />
+                   <ImageUploadField label="Center Foreground" value={formData.visuals?.hero3 || ''} onChange={v => handleVisualChange('hero3', v)} placeholder="Small accent pop image..." />
                 </div>
              </div>
 
              <div className="border-t border-gray-100 pt-8">
                 <h3 className="text-[#2d3436] font-medium mb-4">Shop by Category (6 Images)</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                   <ImageUploadField label="1. Large Indoor Plants" value={formData.visuals.cat1} onChange={v => handleVisualChange('cat1', v)} />
-                   <ImageUploadField label="2. Large Outdoor Plants" value={formData.visuals.cat2} onChange={v => handleVisualChange('cat2', v)} />
-                   <ImageUploadField label="3. Succulents & Cacti" value={formData.visuals.cat3} onChange={v => handleVisualChange('cat3', v)} />
-                   <ImageUploadField label="4. Flowering Plants" value={formData.visuals.cat4} onChange={v => handleVisualChange('cat4', v)} />
-                   <ImageUploadField label="5. Herbs & Kitchen" value={formData.visuals.cat5} onChange={v => handleVisualChange('cat5', v)} />
-                   <ImageUploadField label="6. Rare & Exotic" value={formData.visuals.cat6} onChange={v => handleVisualChange('cat6', v)} />
+                   <ImageUploadField label="1. Large Indoor Plants" value={formData.visuals?.cat1 || ''} onChange={v => handleVisualChange('cat1', v)} />
+                   <ImageUploadField label="2. Large Outdoor Plants" value={formData.visuals?.cat2 || ''} onChange={v => handleVisualChange('cat2', v)} />
+                   <ImageUploadField label="3. Succulents & Cacti" value={formData.visuals?.cat3 || ''} onChange={v => handleVisualChange('cat3', v)} />
+                   <ImageUploadField label="4. Flowering Plants" value={formData.visuals?.cat4 || ''} onChange={v => handleVisualChange('cat4', v)} />
+                   <ImageUploadField label="5. Herbs & Kitchen" value={formData.visuals?.cat5 || ''} onChange={v => handleVisualChange('cat5', v)} />
+                   <ImageUploadField label="6. Rare & Exotic" value={formData.visuals?.cat6 || ''} onChange={v => handleVisualChange('cat6', v)} />
                 </div>
              </div>
 
              <div className="border-t border-gray-100 pt-8">
                 <h3 className="text-[#2d3436] font-medium mb-4">Seasonal Picks Banner</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                   <ImageUploadField label="Background Right" value={formData.visuals.sea1} onChange={v => handleVisualChange('sea1', v)} />
-                   <ImageUploadField label="Background Left" value={formData.visuals.sea2} onChange={v => handleVisualChange('sea2', v)} />
-                   <ImageUploadField label="Foreground Center" value={formData.visuals.sea3} onChange={v => handleVisualChange('sea3', v)} />
+                   <ImageUploadField label="Background Right" value={formData.visuals?.sea1 || ''} onChange={v => handleVisualChange('sea1', v)} />
+                   <ImageUploadField label="Background Left" value={formData.visuals?.sea2 || ''} onChange={v => handleVisualChange('sea2', v)} />
+                   <ImageUploadField label="Foreground Center" value={formData.visuals?.sea3 || ''} onChange={v => handleVisualChange('sea3', v)} />
                 </div>
              </div>
 
              <div className="border-t border-gray-100 pt-8">
                 <h3 className="text-[#2d3436] font-medium mb-4">About Us Region</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                   <ImageUploadField label="Growing Together Journey Image" value={formData.visuals.about} onChange={v => handleVisualChange('about', v)} />
+                   <ImageUploadField label="Growing Together Journey Image" value={formData.visuals?.about || ''} onChange={v => handleVisualChange('about', v)} />
                 </div>
              </div>
              
              <div className="border-t border-gray-100 pt-8">
                 <h3 className="text-[#2d3436] font-medium mb-4">Garden Gallery Strip (Footer Carousel)</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                   <ImageUploadField label="Gallery Image 1" value={formData.visuals.gal1} onChange={v => handleVisualChange('gal1', v)} />
-                   <ImageUploadField label="Gallery Image 2" value={formData.visuals.gal2} onChange={v => handleVisualChange('gal2', v)} />
-                   <ImageUploadField label="Gallery Image 3" value={formData.visuals.gal3} onChange={v => handleVisualChange('gal3', v)} />
-                   <ImageUploadField label="Gallery Image 4" value={formData.visuals.gal4} onChange={v => handleVisualChange('gal4', v)} />
-                   <ImageUploadField label="Gallery Image 5" value={formData.visuals.gal5} onChange={v => handleVisualChange('gal5', v)} />
-                   <ImageUploadField label="Gallery Image 6" value={formData.visuals.gal6} onChange={v => handleVisualChange('gal6', v)} />
+                   <ImageUploadField label="Gallery Image 1" value={formData.visuals?.gal1 || ''} onChange={v => handleVisualChange('gal1', v)} />
+                   <ImageUploadField label="Gallery Image 2" value={formData.visuals?.gal2 || ''} onChange={v => handleVisualChange('gal2', v)} />
+                   <ImageUploadField label="Gallery Image 3" value={formData.visuals?.gal3 || ''} onChange={v => handleVisualChange('gal3', v)} />
+                   <ImageUploadField label="Gallery Image 4" value={formData.visuals?.gal4 || ''} onChange={v => handleVisualChange('gal4', v)} />
+                   <ImageUploadField label="Gallery Image 5" value={formData.visuals?.gal5 || ''} onChange={v => handleVisualChange('gal5', v)} />
+                   <ImageUploadField label="Gallery Image 6" value={formData.visuals?.gal6 || ''} onChange={v => handleVisualChange('gal6', v)} />
                 </div>
              </div>
           </div>
