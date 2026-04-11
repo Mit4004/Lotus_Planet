@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { apiRequest } from '../utils/api';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { ArrowRight, Leaf, Package, HeartHandshake, Star } from 'lucide-react';
 import { ProductCard } from '../components/ProductCard';
@@ -11,17 +12,37 @@ export function Home() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [slidingText, setSlidingText] = useState('Indoor Plants • Outdoor Plants • Succulents • Flowering Plants • Herbs • Rare & Exotic • Free Delivery above ₹500 • ');
+  const [visuals, setVisuals] = useState({
+      hero1: 'https://images.unsplash.com/photo-1604864228543-f8aa75ef6a97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxob3VzZXBsYW50cyUyMGluZG9vciUyMHBsYW50cyUyMGFlc3RoZXRpY3xlbnwxfHx8fDE3NzM2ODQ3NDF8MA&ixlib=rb-4.1.0&q=80&w=1080',
+      hero2: 'https://images.unsplash.com/photo-1666102610952-219650709294?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwyfHxob3VzZXBsYW50cyUyMGluZG9vciUyMHBsYW50cyUyMGFlc3RoZXRpY3xlbnwxfHx8fDE3NzM2ODQ3NDF8MA&ixlib=rb-4.1.0&q=80&w=1080',
+      hero3: 'https://images.unsplash.com/photo-1507988914355-bf49fdbc7368?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHw0fHxob3VzZXBsYW50cyUyMGluZG9vciUyMHBsYW50cyUyMGFlc3RoZXRpY3xlbnwxfHx8fDE3NzM2ODQ3NDF8MA&ixlib=rb-4.1.0&q=80&w=1080',
+      cat1: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80&w=1080',
+      cat2: 'https://images.unsplash.com/photo-1584589167171-541ce45f1eea?auto=format&fit=crop&q=80&w=1080',
+      cat3: 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&q=80&w=800',
+      cat4: 'https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&q=80&w=800',
+      cat5: 'https://images.unsplash.com/photo-1595188177579-3738096f9bf1?auto=format&fit=crop&q=80&w=800',
+      cat6: 'https://images.unsplash.com/photo-1620127251761-c80dce686cb6?auto=format&fit=crop&q=80&w=800',
+      sea1: 'https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&q=80&w=600',
+      sea2: 'https://images.unsplash.com/photo-1559564484-e48b3e040ff4?auto=format&fit=crop&q=80&w=600',
+      sea3: 'https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?auto=format&fit=crop&q=80&w=800',
+      about: 'https://images.unsplash.com/photo-1619077130450-baea09efa355?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwbGFudCUyMG51cnNlcnklMjBncmVlbmhvdXNlfGVufDF8fHx8MTc3MzY0MDgwM3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+      gal1: 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&q=80&w=500',
+      gal2: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80&w=500',
+      gal3: 'https://images.unsplash.com/photo-1559564484-e48b3e040ff4?auto=format&fit=crop&q=80&w=500',
+      gal4: 'https://images.unsplash.com/photo-1595188177579-3738096f9bf1?auto=format&fit=crop&q=80&w=500',
+      gal5: 'https://images.unsplash.com/photo-1620127251761-c80dce686cb6?auto=format&fit=crop&q=80&w=500',
+      gal6: 'https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&q=80&w=500'
+  });
 
   useEffect(() => {
-    const settings = localStorage.getItem('lotusplanet_settings');
-    if (settings) {
-      try {
-        const parsed = JSON.parse(settings);
-        if (parsed.marqueeText) setSlidingText(parsed.marqueeText);
-      } catch (e) {
-        console.error("Failed to parse settings", e);
-      }
-    }
+    apiRequest('/settings')
+      .then((res: any) => {
+        if (res.slidingText) setSlidingText(res.slidingText);
+        if (res.visuals) setVisuals(prev => ({ ...prev, ...res.visuals }));
+      })
+      .catch(err => {
+        console.error("Failed to fetch store settings from database", err);
+      });
   }, []);
 
   const featuredProducts = [
@@ -195,7 +216,7 @@ export function Home() {
               className="absolute top-0 right-0 w-[380px] h-[480px] rounded-3xl overflow-hidden shadow-2xl z-10"
             >
               <ImageWithFallback
-                src="https://images.unsplash.com/photo-1604864228543-f8aa75ef6a97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxob3VzZXBsYW50cyUyMGluZG9vciUyMHBsYW50cyUyMGFlc3RoZXRpY3xlbnwxfHx8fDE3NzM2ODQ3NDF8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                src={visuals.hero1}
                 alt="Green plant in white pot"
                 className="w-full h-full object-cover"
               />
@@ -208,7 +229,7 @@ export function Home() {
               className="absolute bottom-0 left-0 w-[320px] h-[400px] rounded-3xl overflow-hidden shadow-2xl z-20"
             >
               <ImageWithFallback
-                src="https://images.unsplash.com/photo-1666102610952-219650709294?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwyfHxob3VzZXBsYW50cyUyMGluZG9vciUyMHBsYW50cyUyMGFlc3RoZXRpY3xlbnwxfHx8fDE3NzM2ODQ3NDF8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                src={visuals.hero2}
                 alt="Plant in pot"
                 className="w-full h-full object-cover"
               />
@@ -221,7 +242,7 @@ export function Home() {
               className="absolute top-[120px] left-[280px] w-[240px] h-[300px] rounded-3xl overflow-hidden shadow-xl z-5"
             >
               <ImageWithFallback
-                src="https://images.unsplash.com/photo-1507988914355-bf49fdbc7368?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHw0fHxob3VzZXBsYW50cyUyMGluZG9vciUyMHBsYW50cyUyMGFlc3RoZXRpY3xlbnwxfHx8fDE3NzM2ODQ3NDF8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                src={visuals.hero3}
                 alt="Snake plant on white chair"
                 className="w-full h-full object-cover"
               />
@@ -295,7 +316,7 @@ export function Home() {
               {/* Card 1 */}
               <Link to="/shop" className="group relative rounded-2xl overflow-hidden h-64 lg:h-full block shadow-md hover:shadow-xl transition-shadow duration-300">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80&w=1080"
+                  src={visuals.cat1}
                   alt="Indoor Plants"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
@@ -308,7 +329,7 @@ export function Home() {
               {/* Card 2 */}
               <Link to="/shop" className="group relative rounded-2xl overflow-hidden h-64 lg:h-full block shadow-md hover:shadow-xl transition-shadow duration-300">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1584589167171-541ce45f1eea?auto=format&fit=crop&q=80&w=1080"
+                  src={visuals.cat2}
                   alt="Outdoor Plants"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
@@ -324,7 +345,7 @@ export function Home() {
               {/* Card 3 */}
               <Link to="/shop" className="group relative rounded-2xl overflow-hidden h-48 lg:h-full block shadow-md hover:shadow-xl transition-shadow duration-300">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&q=80&w=800"
+                  src={visuals.cat3}
                   alt="Succulents & Cacti"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
@@ -337,7 +358,7 @@ export function Home() {
               {/* Card 4 */}
               <Link to="/shop" className="group relative rounded-2xl overflow-hidden h-48 lg:h-full block shadow-md hover:shadow-xl transition-shadow duration-300">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&q=80&w=800"
+                  src={visuals.cat4}
                   alt="Flowering Plants"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
@@ -350,7 +371,7 @@ export function Home() {
               {/* Card 5 */}
               <Link to="/shop" className="group relative rounded-2xl overflow-hidden h-48 lg:h-full block shadow-md hover:shadow-xl transition-shadow duration-300">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1595188177579-3738096f9bf1?auto=format&fit=crop&q=80&w=800"
+                  src={visuals.cat5}
                   alt="Herbs & Kitchen"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
@@ -363,7 +384,7 @@ export function Home() {
               {/* Card 6 */}
               <Link to="/shop" className="group relative rounded-2xl overflow-hidden h-48 lg:h-full block shadow-md hover:shadow-xl transition-shadow duration-300">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1620127251761-c80dce686cb6?auto=format&fit=crop&q=80&w=800"
+                  src={visuals.cat6}
                   alt="Rare & Exotic"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
@@ -521,7 +542,7 @@ export function Home() {
               {/* Image 1 - Top Right - Back */}
               <div className="absolute top-0 right-4 lg:right-12 w-44 h-60 md:w-56 md:h-[320px] rounded-3xl overflow-hidden shadow-2xl rotate-12 z-10 border-4 border-[#7a9e7e]/20 transition-transform duration-700 hover:rotate-6 hover:scale-105">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&q=80&w=600"
+                  src={visuals.sea1}
                   alt="Flowering Plant"
                   className="w-full h-full object-cover"
                 />
@@ -530,7 +551,7 @@ export function Home() {
               {/* Image 2 - Bottom Left - Back */}
               <div className="absolute bottom-4 left-4 lg:left-12 w-40 h-56 md:w-48 md:h-[280px] rounded-3xl overflow-hidden shadow-2xl -rotate-12 z-20 border-4 border-[#d4a5a5]/20 transition-transform duration-700 hover:-rotate-6 hover:scale-105">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1559564484-e48b3e040ff4?auto=format&fit=crop&q=80&w=600"
+                  src={visuals.sea2}
                   alt="Rose Bush"
                   className="w-full h-full object-cover"
                 />
@@ -539,7 +560,7 @@ export function Home() {
               {/* Image 3 - Center - Front */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-52 h-72 md:w-64 md:h-[380px] rounded-3xl overflow-hidden shadow-2xl -rotate-3 z-30 border-4 border-[#f7f3ec] transition-transform duration-700 hover:-translate-y-[52%] hover:rotate-0 hover:scale-105">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?auto=format&fit=crop&q=80&w=800"
+                  src={visuals.sea3}
                   alt="Lavender"
                   className="w-full h-full object-cover"
                 />
@@ -575,7 +596,7 @@ export function Home() {
 
             <div className="relative h-[300px] md:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
               <ImageWithFallback
-                src="https://images.unsplash.com/photo-1619077130450-baea09efa355?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwbGFudCUyMG51cnNlcnklMjBncmVlbmhvdXNlfGVufDF8fHx8MTc3MzY0MDgwM3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                src={visuals.about}
                 alt="Plant nursery"
                 className="w-full h-full object-cover"
               />
@@ -598,12 +619,7 @@ export function Home() {
           <div className="max-w-[1600px] mx-auto rounded-3xl overflow-hidden shadow-xl">
             <div className="grid grid-cols-3 lg:grid-cols-6 gap-0">
               {[
-                "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&q=80&w=500",
-                "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80&w=500",
-                "https://images.unsplash.com/photo-1559564484-e48b3e040ff4?auto=format&fit=crop&q=80&w=500",
-                "https://images.unsplash.com/photo-1595188177579-3738096f9bf1?auto=format&fit=crop&q=80&w=500",
-                "https://images.unsplash.com/photo-1620127251761-c80dce686cb6?auto=format&fit=crop&q=80&w=500",
-                "https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&q=80&w=500"
+                visuals.gal1, visuals.gal2, visuals.gal3, visuals.gal4, visuals.gal5, visuals.gal6
               ].map((imgUrl, i) => (
                 <div key={i} className="aspect-square relative group overflow-hidden">
                   <ImageWithFallback

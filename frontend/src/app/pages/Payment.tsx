@@ -1,29 +1,35 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { apiRequest } from '../utils/api';
-import { ShieldCheck, Upload, Image as ImageIcon, CheckCircle, Clock, X } from 'lucide-react';
+import { ShieldCheck, Upload, Image as ImageIcon, CheckCircle, Clock, X, Copy } from 'lucide-react';
 
 export function Payment() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [order, setOrder] = useState<any>(null);
+  const [storeSettings, setStoreSettings] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>('');
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
+  const [copied, setCopied] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    fetchOrder();
+    fetchData();
   }, [id]);
 
-  const fetchOrder = async () => {
+  const fetchData = async () => {
     try {
-      const res = await apiRequest(`/orders/${id}`);
-      setOrder(res.data);
+      const [orderRes, settingsRes] = await Promise.all([
+        apiRequest(`/orders/${id}`),
+        apiRequest('/settings')
+      ]);
+      setOrder(orderRes.data);
+      setStoreSettings(settingsRes);
     } catch (err) {
-      setError('Order not found');
+      setError('Order or Settings not found');
     } finally {
       setLoading(false);
     }
@@ -69,7 +75,8 @@ export function Payment() {
       });
 
       // 3. Refresh Order State
-      await fetchOrder();
+      const ordRes = await apiRequest(`/orders/${id}`);
+      setOrder(ordRes.data);
 
     } catch (err: any) {
       setError(err.message || 'Failed to submit payment. Please try again.');
@@ -128,26 +135,34 @@ export function Payment() {
             <div className="p-8 md:p-12">
               <div className="bg-[#f7f3ec] p-6 rounded-2xl mb-8 border border-[#7a9e7e]/10">
                 <h3 className="font-medium text-[#2d3436] mb-4">Admin Payment Details</h3>
+
+                {storeSettings?.upiQrCode && (
+                  <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow-sm border border-[#7a9e7e]/20 mb-6">
+                    <p className="text-xs text-center text-gray-500 font-medium mb-3 uppercase tracking-wider">Scan to Pay via any UPI App</p>
+                    <img src={storeSettings.upiQrCode} alt="Scan to Pay UPI QR Code" className="w-56 h-56 object-contain rounded-xl" />
+                  </div>
+                )}
+
                 <div className="space-y-3 text-sm text-gray-700">
                   <div className="flex justify-between border-b border-[#7a9e7e]/10 pb-2">
-                    <span className="text-gray-500">Bank Name</span>
-                    <span className="font-medium">HDFC Bank</span>
+                    <span className="text-gray-500">Store Name</span>
+                    <span className="font-medium">{storeSettings?.shopName || 'Lotus Planet'}</span>
                   </div>
-                  <div className="flex justify-between border-b border-[#7a9e7e]/10 pb-2">
-                    <span className="text-gray-500">Account Name</span>
-                    <span className="font-medium">Lotus Planet Enterprises</span>
-                  </div>
-                  <div className="flex justify-between border-b border-[#7a9e7e]/10 pb-2">
-                    <span className="text-gray-500">Account No.</span>
-                    <span className="font-medium">50100234567891</span>
-                  </div>
-                  <div className="flex justify-between border-b border-[#7a9e7e]/10 pb-2">
-                    <span className="text-gray-500">IFSC Code</span>
-                    <span className="font-medium">HDFC0001234</span>
-                  </div>
-                  <div className="flex justify-between pt-1">
+                  <div className="flex justify-between pt-1 items-center">
                     <span className="text-gray-500">UPI ID</span>
-                    <span className="font-medium text-[#c49595]">lotusplanet@hdfc</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-[#c49595]">{storeSettings?.upiId || 'lotusplanet@upi'}</span>
+                      <button 
+                        onClick={() => {
+                          navigator.clipboard.writeText(storeSettings?.upiId || 'lotusplanet@upi');
+                          setCopied(true);
+                          setTimeout(() => setCopied(false), 2000);
+                        }}
+                        className={`p-1.5 rounded text-white text-xs flex items-center transition-colors ${copied ? 'bg-green-500' : 'bg-[#7a9e7e] hover:bg-[#6a8e6e]'}`}
+                      >
+                        {copied ? 'Copied' : <Copy size={14} />}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

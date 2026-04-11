@@ -42,6 +42,7 @@ app.use('/api/products', require('./src/routes/product.routes'));
 app.use('/api/categories', require('./src/routes/category.routes'));
 app.use('/api/orders', require('./src/routes/order.routes'));
 app.use('/api/upload', require('./src/routes/upload.routes'));
+app.use('/api/settings', require('./src/routes/settings.routes'));
 
 // Global Error Handler
 app.use((err, req, res, next) => {
