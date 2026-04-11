@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Navigation } from './Navigation';
 import { Footer } from './Footer';
 import { ScrollToTop } from './ScrollToTop';
+import { CartDrawer } from './CartDrawer';
 
 export function Layout() {
   const location = useLocation();
@@ -11,6 +12,7 @@ export function Layout() {
     <div className="min-h-screen bg-[#f7f3ec]">
       <ScrollToTop />
       <Navigation />
+      <CartDrawer />
       <AnimatePresence mode="wait">
         <motion.div
           key={location.pathname}
@@ -26,3 +28,4 @@ export function Layout() {
     </div>
   );
 }
+
