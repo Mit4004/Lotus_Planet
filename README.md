@@ -1,12 +1,12 @@
-# 🌸 Lotus Planet
+#  Lotus Planet
 
 A full-stack e-commerce web application for a plant and flower shop. Lotus Planet allows users to browse, search, and purchase plants online, while admins can manage products, categories, and orders through a dedicated dashboard.
 
 ---
 
-## 🌿 Features
+##  Features
 
-### 👤 User Features
+###  User Features
 - Register & Login with JWT authentication
 - Browse products by category
 - Add items to cart and wishlist
@@ -14,7 +14,7 @@ A full-stack e-commerce web application for a plant and flower shop. Lotus Plane
 - View order history in profile
 - Plant care tips page
 
-### 🔐 Admin Features
+###  Admin Features
 - Secure admin dashboard
 - Add, edit, and delete products
 - Upload product images via Cloudinary
@@ -24,7 +24,7 @@ A full-stack e-commerce web application for a plant and flower shop. Lotus Plane
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Frontend
 | Technology | Purpose |
@@ -50,7 +50,7 @@ A full-stack e-commerce web application for a plant and flower shop. Lotus Plane
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 Lotus_Planet/
@@ -80,7 +80,7 @@ Lotus_Planet/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -163,7 +163,7 @@ The frontend will run at `http://localhost:5173`.
 
 ---
 
-## 🔌 API Endpoints
+##  API Endpoints
 
 | Method | Route | Description |
 |--------|-------|-------------|
@@ -181,7 +181,7 @@ The frontend will run at `http://localhost:5173`.
 
 ---
 
-## 🌐 Environment Variables Reference
+##  Environment Variables Reference
 
 | Variable | Description |
 |---|---|
@@ -200,7 +200,7 @@ The frontend will run at `http://localhost:5173`.
 
 ---
 
-## 📸 Pages
+##  Pages
 
 - **Home** — Hero section, featured plants, categories
 - **Shop** — Product listing with filters
@@ -211,7 +211,7 @@ The frontend will run at `http://localhost:5173`.
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 1. Fork the repository
 2. Create a new branch: `git checkout -b feature/your-feature-name`
@@ -220,13 +220,3 @@ The frontend will run at `http://localhost:5173`.
 5. Open a Pull Request
 
 ---
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-## 👩‍💻 Author
-
-Made with 💚 by **Khushi Patel**
