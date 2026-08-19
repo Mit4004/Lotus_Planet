@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 import { Leaf, Eye, EyeOff, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export function Login() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get('redirect') || '/';
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,7 +23,7 @@ export function Login() {
       if (authUser.isAdmin) {
         navigate('/admin/dashboard');
       } else {
-        navigate('/');
+        navigate(redirectTo);
       }
     } catch (err: any) {
       setError(err.message || 'Login failed. Please check your credentials.');
@@ -44,7 +46,9 @@ export function Login() {
               <h1 className="text-3xl text-[#2d3436] font-medium text-center" style={{ fontFamily: 'Playfair Display, serif' }}>
                 Welcome Back 🌿
               </h1>
-              <p className="text-gray-500 mt-2 text-center text-sm">Sign in to your LotusPlanet account</p>
+              <p className="text-gray-500 mt-2 text-center text-sm">
+                {redirectTo !== '/' ? 'Sign in to continue to checkout' : 'Sign in to your LotusPlanet account'}
+              </p>
             </div>
 
             {error && (
@@ -105,7 +109,10 @@ export function Login() {
 
             <p className="text-center text-sm text-gray-500 mt-6">
               Don't have an account?{' '}
-              <Link to="/register" className="text-[#7a9e7e] font-medium hover:underline">
+              <Link
+                to={redirectTo !== '/' ? `/register?redirect=${redirectTo}` : '/register'}
+                className="text-[#7a9e7e] font-medium hover:underline"
+              >
                 Create one free
               </Link>
             </p>

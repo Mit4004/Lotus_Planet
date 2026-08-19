@@ -1,12 +1,24 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
+import { X, Minus, Plus, ShoppingBag, Trash2, LogIn } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { Link } from 'react-router';
+import { useNavigate } from 'react-router';
+import { useAuth } from '../context/AuthContext';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 
 export function CartDrawer() {
   const { items, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, cartTotal, cartCount } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const shipping = 50;
+
+  const handleCheckout = () => {
+    setIsCartOpen(false);
+    if (!user) {
+      navigate('/login?redirect=/checkout');
+    } else {
+      navigate('/checkout');
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -126,11 +138,18 @@ export function CartDrawer() {
                 </div>
                 
                 <div className="flex flex-col gap-3">
-                  <Link to="/checkout" onClick={() => setIsCartOpen(false)}>
-                    <button className="w-full bg-[#2a4a2e] hover:bg-[#1f3722] text-white py-4 rounded-xl font-medium transition-colors shadow-lg hover:shadow-xl">
-                      Proceed to Checkout
-                    </button>
-                  </Link>
+                  <button
+                    onClick={handleCheckout}
+                    className="w-full bg-[#2a4a2e] hover:bg-[#1f3722] text-white py-4 rounded-xl font-medium transition-colors shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                  >
+                    {!user && <LogIn size={17} />}
+                    Proceed to Checkout
+                  </button>
+                  {!user && (
+                    <p className="text-center text-xs text-gray-400">
+                      You'll be asked to sign in first
+                    </p>
+                  )}
                   <button 
                     onClick={() => setIsCartOpen(false)}
                     className="w-full bg-white border border-[#2a4a2e] text-[#2a4a2e] hover:bg-[#f7f3ec] py-4 rounded-xl font-medium transition-colors"

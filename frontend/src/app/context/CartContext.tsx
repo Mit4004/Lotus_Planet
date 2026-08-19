@@ -9,16 +9,26 @@ export interface CartItem {
   size: 'S' | 'M' | 'L';
 }
 
+export interface CartToastItem {
+  id: string;
+  name: string;
+  image: string;
+  price: number;
+  size: string;
+}
+
 interface CartContextType {
   items: CartItem[];
   cartCount: number;
   cartTotal: number;
   isCartOpen: boolean;
+  activeToast: CartToastItem | null;
   addToCart: (item: CartItem) => void;
   removeFromCart: (id: string, size: string) => void;
   updateQuantity: (id: string, size: string, quantity: number) => void;
   clearCart: () => void;
   setIsCartOpen: (isOpen: boolean) => void;
+  setActiveToast: (toast: CartToastItem | null) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -35,10 +45,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   });
   
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [activeToast, setActiveToast] = useState<CartToastItem | null>(null);
 
   useEffect(() => {
     localStorage.setItem('lotusplanet_cart', JSON.stringify(items));
   }, [items]);
+
+  useEffect(() => {
+    if (activeToast) {
+      const timer = setTimeout(() => {
+        setActiveToast(null);
+      }, 3500);
+      return () => clearTimeout(timer);
+    }
+  }, [activeToast]);
 
   const cartCount = items.reduce((total, item) => total + item.quantity, 0);
   const cartTotal = items.reduce((total, item) => total + (item.price * item.quantity), 0);
@@ -55,7 +75,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
       return [...prev, newItem];
     });
-    setIsCartOpen(true);
+    
+    // Trigger the premium toast animation
+    setActiveToast({
+      id: `${newItem.id}-${Date.now()}`,
+      name: newItem.name,
+      image: newItem.image,
+      price: newItem.price,
+      size: newItem.size
+    });
   };
 
   const removeFromCart = (id: string, size: string) => {
@@ -82,11 +110,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       cartCount,
       cartTotal,
       isCartOpen,
+      activeToast,
       addToCart,
       removeFromCart,
       updateQuantity,
       clearCart,
-      setIsCartOpen
+      setIsCartOpen,
+      setActiveToast
     }}>
       {children}
     </CartContext.Provider>

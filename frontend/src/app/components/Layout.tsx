@@ -4,6 +4,7 @@ import { Navigation } from './Navigation';
 import { Footer } from './Footer';
 import { ScrollToTop } from './ScrollToTop';
 import { CartDrawer } from './CartDrawer';
+import { CartToast } from './CartToast';
 
 export function Layout() {
   const location = useLocation();
@@ -13,6 +14,7 @@ export function Layout() {
       <ScrollToTop />
       <Navigation />
       <CartDrawer />
+      <CartToast />
       <AnimatePresence mode="wait">
         <motion.div
           key={location.pathname}

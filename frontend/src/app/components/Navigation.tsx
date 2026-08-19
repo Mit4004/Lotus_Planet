@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useAnimation } from 'motion/react';
 import { ShoppingCart, Menu, X, Heart, User, LogIn, LogOut } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -11,6 +11,17 @@ export function Navigation() {
   const navigate = useNavigate();
   const { cartCount, setIsCartOpen } = useCart();
   const { user, logout } = useAuth();
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (cartCount > 0) {
+      controls.start({
+        scale: [1, 1.25, 0.9, 1.1, 1],
+        rotate: [0, -10, 10, -5, 0],
+        transition: { duration: 0.5, ease: 'easeInOut' }
+      });
+    }
+  }, [cartCount, controls]);
 
   const isAdmin = user?.isAdmin || localStorage.getItem('isAdmin') === 'true';
 
@@ -114,14 +125,15 @@ export function Navigation() {
             {/* Cart Icon */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="p-2 hover:text-[#7a9e7e] transition-colors duration-300 relative text-gray-600"
+              className="p-2 hover:text-[#7a9e7e] transition-colors duration-300 relative text-gray-600 focus:outline-none"
             >
-              <ShoppingCart size={22} />
+              <motion.div animate={controls}>
+                <ShoppingCart size={22} />
+              </motion.div>
               {cartCount > 0 && (
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  key={cartCount}
                   className="absolute -top-1 -right-1 bg-[#d4a5a5] text-white text-[10px] rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center font-bold shadow-sm"
                 >
                   {cartCount}

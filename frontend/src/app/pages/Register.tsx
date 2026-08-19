@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 import { Leaf, Eye, EyeOff, UserPlus } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export function Register() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get('redirect') || '/';
   const { register } = useAuth();
   const [form, setForm] = useState({ name: '', email: '', phone: '', password: '', confirm: '' });
   const [showPass, setShowPass] = useState(false);
@@ -29,7 +31,7 @@ export function Register() {
     setLoading(true);
     try {
       await register(form.name, form.email, form.password, form.phone || undefined);
-      navigate('/');
+      navigate(redirectTo);
     } catch (err: any) {
       setError(err.message || 'Registration failed. Please try again.');
     } finally {
